@@ -10,10 +10,13 @@ End Section
 
 <div id="Events"></div>
 
-<table id="EventsTable" class="DataTable">
+<table id="EventsTable" class="display">
     <thead>
         <tr>
             <th>Title</th>
+            <th>Start</th>
+            <th>End</th>
+            <th>Contact</th>
         </tr>
     </thead>
 </table>
@@ -55,13 +58,35 @@ End Section
             var table = $('#EventsTable').dataTable({
                 "ajax": {
                     "url": "http://localhost:45007/api/Events",
-                    "type": "GET"
+                    "type": "GET",
+                    "dataSrc": "",
                 },
                 "columns": [
                     { "data": "Title" },
+                    {
+                        "data": "StartDate",
+                        "type": "date",
+                        "render": function (data, type, full, meta) {
+                            if (type === 'display') {
+                                var endDate = new Date(data);
+                                return endDate.toLocaleDateString();
+                            }
+                            else return data;
+                        },
+                    },
+                    {
+                        "data": "EndDate",
+                        "type": "date",
+                        "render": function (data, type, full, meta) {
+                            if (type === 'display') {
+                                var endDate = new Date(data);
+                                return endDate.toLocaleDateString();
+                            }
+                            else return data;
+                        },
+                    },
+                    { "data": "ContactInfo" },
                 ]
-            }).on('xhr.dt', function (e, settings, json) {
-                alert(json.length + ' row(s) were loaded');
             });
         })
     </script>
